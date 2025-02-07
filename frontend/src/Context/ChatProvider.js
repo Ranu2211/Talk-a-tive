@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const ChatContext = createContext();
+const ChatContext = createContext(null);
 
-export const ChatProvider = ({children}) => {
-    const [user,setUser] = useState();
+ const ChatProvider = ({children}) => {
+    const [user,setUser] = useState(null);
     const [selectedChat, setSelectedChat] = useState();
     const [chats,setChats] = useState([]);
     const [notification,setNotification] = useState([]);
@@ -27,3 +27,4 @@ export const ChatProvider = ({children}) => {
 export const ChatState = () => {
     return useContext(ChatContext);
 }
+export default ChatProvider;

@@ -35,11 +35,11 @@ const user = await User.create({
 });
 if(user){
     res.status(201).json({
-            _id: newUser._id,
-            name:newUser.name,
-           email: newUser.email,
-           pic: newUser.pic,
-           token: generateToken(newUser._id),
+            _id: user._id,
+            name:user.name,
+           email: user.email,
+           pic: user.pic,
+           token: generateToken(user._id),
     })
     
 }

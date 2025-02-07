@@ -13,7 +13,7 @@ export const Chatpage = () => {
   return( 
     <div style={{width:" 100%"}}>
        {user && <SideDrawer/>}
-       <Flex  display="flex" justifyContent="space-between" flexDirection="row" w="100%" h="91.5vh" p="10px">
+      <Flex justifyContent="space-between" flexDirection="row" w="100%" h="91.5vh" p="10px">
         {user && <MyChats fetchAgain={fetchAgain}/>}
         {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
        </Flex>

@@ -12,3 +12,10 @@ router.route("/groupremove").put(protect , removeFromGroup);
  router.route("/groupadd").put(protect, addToGroup);
 
 module.exports = router;
+
+// const EventEmitter = require('events');
+// const emitter = new EventEmitter();
+// emitter.on('Ranu', (name) => {
+//     console.log(`Hello, ${name}!`);
+// });
+// emitter.emit('Ranu','Singhal');
