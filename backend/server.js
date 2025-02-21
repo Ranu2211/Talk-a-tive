@@ -5,8 +5,10 @@ const connectDB = require("./config/db")
 const colors = require("colors");
 const cors = require('cors');
 const path = require('path');
+
 dotenv.config();
 connectDB();
+
 const app = express();
 const userRoutes = require("./routes/userRoutes.js");
 const chatRoutes = require("./routes/chatRoutes"); 

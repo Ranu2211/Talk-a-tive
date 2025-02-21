@@ -1,6 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const generateToken = require("../config/generateToken");
+const nodemailer = require('nodemailer');
+const sendgrid = require('nodemailer-sendgrid-transport');
+const transporter = nodemailer.createTransport(sendgrid({
+   auth : {
+      api_key : process.env.API_KEY 
+   }
+}))
 
 const allUsers = asyncHandler(async(req,res) => {
     const keyword = req.query.search
@@ -34,6 +41,13 @@ const user = await User.create({
     pic,
 });
 if(user){
+// await transporter.sendMail({
+//     to: user.email,
+//     from : "no-reply@talk-a-tive.com",
+//     subject: 'Welcome to Talk-a-tive!',
+//     text: `Hi ${user.name},\n\nThank you for signing up for Talk-a-tive. We're excited to have you onboard!\n\nBest regards,\nTalk-a-tive Team`,
+           
+// });
     res.status(201).json({
             _id: user._id,
             name:user.name,
