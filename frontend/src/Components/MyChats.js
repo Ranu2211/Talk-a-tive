@@ -24,7 +24,7 @@ import GroupChatModal from './miscellaneous/GroupChatModal';
 
         },
       };
-      const {data} = await axios.get("https://ftrrrfffgfg.onrender.com/api/chat", config);
+      const {data} = await axios.get("/api/chat", config);
         console.log(data);
       setChats(data);
   }

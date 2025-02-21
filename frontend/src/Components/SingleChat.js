@@ -38,7 +38,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       };
       setLoading(true);
       const {data} = await axios.get(
-        `https://ftrrrfffgfg.onrender.com/api/message/${selectedChat._id}`,config
+        `/api/message/${selectedChat._id}`,config
       );
       // console.log(messages);
       setMessages(data)
@@ -105,7 +105,7 @@ useEffect(() => {
                   },
               };
               setNewMessage("");
-              const {data} = await axios.post("https://ftrrrfffgfg.onrender.com/api/message",
+              const {data} = await axios.post("/api/message",
                 { content: newMessage,
                 chatId: selectedChat._id},
                 config

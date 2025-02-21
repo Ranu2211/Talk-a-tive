@@ -40,7 +40,7 @@ const Login = () => {
                 },
             };
             const { data } = await axios.post(
-                "https://ftrrrfffgfg.onrender.com/api/user/login",
+                "/api/user/login",
                 { 
                     email: trimmedEmail,
                     password: trimmedPassword

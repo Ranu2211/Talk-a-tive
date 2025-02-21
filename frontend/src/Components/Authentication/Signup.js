@@ -55,7 +55,7 @@ const Signup = () => {
             };
 
             const { data } = await axios.post(
-                "https://ftrrrfffgfg.onrender.com/api/user",
+                "/api/user",
                 { name, email, password, pic },
                 config
             );
