@@ -10,6 +10,7 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmpassword, setConfirmpassword] = useState('');
+     // eslint-disable-next-line
     const [pic, setPic] = useState();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
@@ -49,17 +50,17 @@ const Signup = () => {
 
         try {
             const config = {
+                baseURL: 'http://localhost:4000',
                 headers: {
                     "Content-type": "application/json",
-                },
-            };
+                },};
 
             const { data } = await axios.post(
                 "/api/user",
                 { name, email, password, pic },
                 config
             );
-
+            console.log("User registered:", data);
             toast({
                 title: "Registration successful",
                 status: "success",
@@ -111,7 +112,7 @@ const Signup = () => {
                 />
             </FormControl>
 
-            <FormControl id="email" isRequired>
+            <FormControl id="signup-email" isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input
                     placeholder="Enter Your Email"
@@ -120,7 +121,7 @@ const Signup = () => {
                 />
             </FormControl>
 
-            <FormControl id="password" isRequired>
+            <FormControl id="signup-password" isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
                     <Input

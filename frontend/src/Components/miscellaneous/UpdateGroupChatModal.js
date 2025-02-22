@@ -44,6 +44,7 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
         try{
             setLoading(true);
         const config ={
+          baseURL: 'http://localhost:4000',
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
@@ -96,6 +97,8 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
         try{
             setLoading(true);
         const config ={
+          baseURL: 'http://localhost:4000',
+            
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
@@ -125,6 +128,8 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
       try{
         setRenameLoading(true);
         const config ={
+          baseURL: 'http://localhost:4000',
+            
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
@@ -158,6 +163,8 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
        setLoading(true);
     
        const config ={
+        baseURL: 'http://localhost:4000',
+            
         headers: {
           Authorization : `Bearer ${user.token}`,
         },

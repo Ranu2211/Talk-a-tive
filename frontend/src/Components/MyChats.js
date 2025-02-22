@@ -11,7 +11,7 @@ import GroupChatModal from './miscellaneous/GroupChatModal';
 
  const MyChats = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState();
-  const { user,setUser, selectedChat, setSelectedChat,chats, setChats } = ChatState();
+  const { user,selectedChat, setSelectedChat,chats, setChats } = ChatState();
   const toast = useToast();
 
   const fetchChats = async() => {
@@ -19,6 +19,7 @@ import GroupChatModal from './miscellaneous/GroupChatModal';
     try{
       
       const config = {
+        baseURL: 'http://localhost:4000',
         headers: {
           Authorization: `Bearer ${user.token}`,
 
@@ -44,6 +45,7 @@ toast({
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
+    // eslint-disable-next-line
   },[fetchAgain])
   return (
    <Box

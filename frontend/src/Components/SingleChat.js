@@ -12,7 +12,7 @@ import ScrollableChat from './ScrollableChat.js';
 
 //import {Lottie} from 'react-lottie';
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://localhost:4000";
 var socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
@@ -31,6 +31,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       if(!selectedChat) return;
       try{
         const config = {
+          baseURL: 'http://localhost:4000',
           headers: {
               "Content-type": "application/json",
               Authorization: `Bearer ${user.token}`
@@ -67,12 +68,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       //   // Clean up the socket connection when the component is unmounted
       //   socket.disconnect();
       // };
-
+ // eslint-disable-next-line
   },[]);
   
     useEffect(()=> {
       fetchMessages();
       selectedChatCompare = selectedChat;
+       // eslint-disable-next-line
     },[selectedChat]);
 
     
@@ -99,6 +101,7 @@ useEffect(() => {
       socket.emit('stop typing', selectedChat._id);
               try{
                 const config = {
+                  baseURL: 'http://localhost:4000',
                   headers: {
                       "Content-type": "application/json",
                       Authorization: `Bearer ${user.token}`

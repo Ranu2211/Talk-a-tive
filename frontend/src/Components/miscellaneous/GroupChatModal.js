@@ -34,6 +34,7 @@ const GroupChatModal = ({children}) => {
    setLoading(true);
 
    const config ={
+    baseURL: 'http://localhost:4000',
     headers: {
       Authorization : `Bearer ${user.token}`,
     },
@@ -71,6 +72,7 @@ const GroupChatModal = ({children}) => {
      }
      try{
    const config ={
+    baseURL: 'http://localhost:4000',
     headers: {
       Authorization : `Bearer ${user.token}`,
     },

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box,Text} from "@chakra-ui/layout";
-import { Tooltip ,Flex,Menu, MenuButton, MenuList, MenuItem, MenuDivider, Input, useToast} from '@chakra-ui/react'
+import { Tooltip ,Menu, MenuButton, MenuList, MenuItem, MenuDivider, Input, useToast} from '@chakra-ui/react'
 import {Button} from "@chakra-ui/button";
 import {Avatar} from "@chakra-ui/avatar";
 import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons";
@@ -13,11 +13,11 @@ import {Spinner} from "@chakra-ui/spinner"
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
+  
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
+  
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react'
 import { UserListItem } from '../UserAvatar/UserListItem';
@@ -29,7 +29,7 @@ const SideDrawer = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
-  const { user,setUser, selectedChat, setSelectedChat,chats, setChats,notification,setNotification } = ChatState();
+  const { user, setSelectedChat,chats, setChats,notification,setNotification } = ChatState();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -54,6 +54,7 @@ const SideDrawer = () => {
         setLoading(true);
 
         const config = {
+          baseURL: 'http://localhost:4000',
           headers: {
             Authorization: `Bearer ${user.token}`,
 
@@ -84,6 +85,7 @@ const SideDrawer = () => {
           setLoadingChat(true);
 
           const config = {
+            baseURL: 'http://localhost:4000',
             headers: {
               "Content-type" : "application/json",
               Authorization: `Bearer ${user.token}`,
@@ -120,7 +122,7 @@ const SideDrawer = () => {
    >
     <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
      <Button variant="ghost" onClick={onOpen}>
-     <i class="fa fa-search" ></i>
+     <i className="fa fa-search" ></i>
      <Text d={{base: "none", md: "flex"}} px="4"> Search User</Text>
      </Button>
   
