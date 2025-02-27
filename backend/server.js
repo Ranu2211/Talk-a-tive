@@ -13,10 +13,12 @@ const app = express();
 const userRoutes = require("./routes/userRoutes.js");
 const chatRoutes = require("./routes/chatRoutes"); 
 const messageRoutes = require("./routes/messageRoutes"); 
+const sendmail = require("./controllers/sendmail.js");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 // app.get('/', (req,res) => {
 //          res.send("API is running");
 //       });
@@ -24,7 +26,8 @@ app.use(express.json());
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.post('/send-mail',sendmail);
 
 //.....deployment
 // const  _dirname1 = path.resolve();
@@ -44,7 +47,8 @@ app.use('/api/message', messageRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
-const PORT = process.env.PORT || 4000;
+
+const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT,
    console.log(`Server started on PORT ${PORT}...`.yellow.bold)
 );

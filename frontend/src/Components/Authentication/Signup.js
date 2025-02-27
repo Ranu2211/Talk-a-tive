@@ -15,7 +15,7 @@ const Signup = () => {
     const [loading, setLoading] = useState(false);
     const toast = useToast();
     const history = useHistory();
-
+const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     const handleClick = () => {
         setShow(!show);
     }
@@ -50,13 +50,12 @@ const Signup = () => {
 
         try {
             const config = {
-                baseURL: 'http://localhost:4000',
                 headers: {
                     "Content-type": "application/json",
                 },};
 
             const { data } = await axios.post(
-                "/api/user",
+`                ${baseURL}/api/user`,
                 { name, email, password, pic },
                 config
             );
@@ -87,19 +86,7 @@ const Signup = () => {
         }
     };
 
-    const setGuestCredentials = () => {
-        setName("Guest User");
-        setEmail("guest@example.com");
-        setPassword("123456");
-        setConfirmpassword("123456");
-        
-        // Debug log to verify state updates
-        console.log("Guest credentials set:", {
-            name: "Guest User",
-            email: "guest@example.com",
-            password: "123456"
-        });
-    };
+    
 
     return (
         <VStack spacing="5px" color="black">
@@ -158,17 +145,6 @@ const Signup = () => {
                 isLoading={loading}
             >
                 Sign Up
-            </Button>
-
-            <Button
-                variant="solid"
-                colorScheme="red"
-                width="100%"
-                mt={2}
-                onClick={setGuestCredentials}
-                isLoading={loading}
-            >
-                Get Guest User Credentials
             </Button>
         </VStack>
     );

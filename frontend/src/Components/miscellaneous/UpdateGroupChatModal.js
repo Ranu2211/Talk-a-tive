@@ -29,7 +29,7 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
     const {selectedChat, setSelectedChat, user} = ChatState();
     
     const toast = useToast();
-
+const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     const handleRemove = async(user1)=> {
         if(selectedChat.groupAdmin._id !== user._id && user1._id !== user._id){
             toast({
@@ -44,12 +44,12 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
         try{
             setLoading(true);
         const config ={
-          baseURL: 'http://localhost:4000',
+          
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
            };
-           const { data } = await axios.put(`/api/chat/groupremove`,{
+           const { data } = await axios.put(`${baseURL}/api/chat/groupremove`,{
            chatId: selectedChat._id,
            userId: user1._id,
       },config);
@@ -96,14 +96,12 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
 
         try{
             setLoading(true);
-        const config ={
-          baseURL: 'http://localhost:4000',
-            
+        const config ={ 
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
            };
-           const { data } = await axios.put('/api/chat/groupadd',{
+           const { data } = await axios.put(`${baseURL}/api/chat/groupadd`,{
            chatId: selectedChat._id,
            userId: user1._id,
       },config);
@@ -128,13 +126,12 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
       try{
         setRenameLoading(true);
         const config ={
-          baseURL: 'http://localhost:4000',
-            
+          
             headers: {
               Authorization : `Bearer ${user.token}`,
             },
            };
-           const { data } = await axios.put('/api/chat/rename',{
+           const { data } = await axios.put(`${baseURL}/api/chat/rename`,{
            chatId: selectedChat._id,
            chatName: groupChatName,
       },config);
@@ -163,13 +160,12 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
        setLoading(true);
     
        const config ={
-        baseURL: 'http://localhost:4000',
             
         headers: {
           Authorization : `Bearer ${user.token}`,
         },
        };
-       const { data } = await axios.get(`/api/user?search=${search}`, config);
+       const { data } = await axios.get(`${baseURL}/api/user?search=${search}`, config);
        console.log(data);
        setLoading(false);
        setSearchResult(data);
@@ -252,7 +248,7 @@ const UpdateGroupChatModal = ({fetchAgain, setFetchAgain,fetchMessages}) => {
               </ModalBody>
               <ModalFooter>
                 <Button 
-                colorScheme='red' 
+                colorScheme='#63b3ed;' 
             //     color= "white"
             //  backgroundColor="red"
                 onClick={() => handleRemove(user)}>

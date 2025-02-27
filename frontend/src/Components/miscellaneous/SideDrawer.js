@@ -1,19 +1,23 @@
 import React, {useState} from 'react';
-import {Box,Text} from "@chakra-ui/layout";
+//import {Box,Text} from "@chakra-ui/layout";
 import { Tooltip ,Menu, MenuButton, MenuList, MenuItem, MenuDivider, Input, useToast} from '@chakra-ui/react'
-import {Button} from "@chakra-ui/button";
-import {Avatar} from "@chakra-ui/avatar";
+//import {Button} from "@chakra-ui/button";
+//import {Avatar} from "@chakra-ui/avatar";
 import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons";
 import {ChatState} from "../../Context/ChatProvider"
 import ProfileModal from './ProfileModal';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import {Chatloading} from '../../Components/Chatloading';
-import {Spinner} from "@chakra-ui/spinner"
+//import {Spinner} from "@chakra-ui/spinner"
 import {
+  Spinner,
+  Avatar,
+  Box,
+  Text,
   Drawer,
   DrawerBody,
-  
+  Button,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -32,7 +36,7 @@ const SideDrawer = () => {
   const { user, setSelectedChat,chats, setChats,notification,setNotification } = ChatState();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure()
-
+const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
@@ -54,13 +58,13 @@ const SideDrawer = () => {
         setLoading(true);
 
         const config = {
-          baseURL: 'http://localhost:4000',
+          
           headers: {
             Authorization: `Bearer ${user.token}`,
 
           },
         };
-        const {data} = await axios.get(`/api/user?search=${search}`, config);
+        const {data} = await axios.get(`${baseURL}/api/user?search=${search}`, config);
 
         
         setLoading(false);
@@ -85,14 +89,14 @@ const SideDrawer = () => {
           setLoadingChat(true);
 
           const config = {
-            baseURL: 'http://localhost:4000',
+
             headers: {
               "Content-type" : "application/json",
               Authorization: `Bearer ${user.token}`,
             },
           };
 
-          const {data} = await axios.post("/api/chat", {userId}, config);
+          const {data} = await axios.post(`${baseURL}/api/chat`, {userId}, config);
           if(!chats.find((c) => c._id === data._id)) setChats([data,...chats]);
           setSelectedChat(data);
           setLoadingChat(false);

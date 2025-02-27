@@ -1,33 +1,79 @@
-import { FormControl, FormLabel, VStack, Input, InputGroup, Button, InputRightElement } from '@chakra-ui/react'
+import { FormControl, FormLabel, VStack, Input, InputGroup, Button, InputRightElement, Text, Link, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
+import { ChatState } from '../../Context/ChatProvider';
 
 const Login = () => {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const history = useHistory();
-    
-    const handleClick = () => {
-        setShow(!show);
+    const {setUser} = ChatState();
+
+    const handleClick = () => setShow(!show);
+const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+    // Forgot Password Handler
+    const handleForgotPassword = async (e) => {
+    e.preventDefault();
+
+    if (!forgotEmail.trim()) {
+        toast({
+            title: 'Please enter your email.',
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+        });
+        return;
     }
 
-    const submitHandler = async() => {
+    try {
         setLoading(true);
-        const trimmedEmail = email.trim();
-        const trimmedPassword = password.trim();
+        const config = {
+            headers: { "Content-Type": "application/json" },
+        };
 
-        if(!trimmedEmail || !trimmedPassword){
+        await axios.post(
+            `${baseURL}/api/user/send-mail`,
+            { email: forgotEmail }, 
+            config
+        );
+
+        toast({
+            title: 'Reset link sent to your email.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
+
+        onClose();
+    } catch (error) {
+        toast({
+            title: 'Failed to send email.',
+            description: error.response?.data?.message || 'Try again later.',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        });
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+    const submitHandler = async () => {
+        setLoading(true);
+        if (!email.trim() || !password.trim()) {
             toast({
-                title: 'Please Fill all the Fields',
+                title: 'Please fill all the fields',
                 status: 'warning',
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: "bottom",
             });
             setLoading(false);
             return;
@@ -35,47 +81,33 @@ const Login = () => {
 
         try {
             const config = {
-                baseURL: 'http://localhost:4000',
-                headers: {
-                    "Content-type": "application/json",
-                },
-            };
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
             const { data } = await axios.post(
-                "/api/user/login",
-                { 
-                    email: trimmedEmail,
-                    password: trimmedPassword
-                },
-                config
-            );
-            
+                `${baseURL}/api/user/login`,
+                 { email, password }, config);
             toast({
-                title: "Login successful",
+                title: 'Login successful',
                 status: 'success',
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: "bottom",
             });
-            
-            localStorage.setItem("userInfo", JSON.stringify(data));
+             setUser(data)
+            localStorage.setItem('userInfo', JSON.stringify(data));
             setLoading(false);
-            history.push("/chats");
-        } catch(error) {
+            history.push('/chats');
+        } catch (error) {
             toast({
-                title: "Error Occurred",
-                description: error.response?.data?.message || "Invalid email or password",
+                title: 'Error occurred',
+                description: error.response?.data?.message || 'Invalid email or password',
                 status: 'error',
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: "bottom",
             });
             setLoading(false);
-        }
-    };
-const setGuestCredentials = () => {
-        setEmail("guest@example.com");
-        setPassword("123456");
-        
+        } 
     };
 
     return (
@@ -83,7 +115,7 @@ const setGuestCredentials = () => {
             <FormControl id="email" isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input
-                    placeholder="Enter your Email"
+                    placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -93,38 +125,56 @@ const setGuestCredentials = () => {
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
                     <Input
-                        type={show ? "text" : "password"}
+                        type={show ? 'text' : 'password'}
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick}>
-                            {show ? "Hide" : "Show"}
+                            {show ? 'Hide' : 'Show'}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
             </FormControl>
 
-            <Button
-                colorScheme="blue"
-                mt={4}
-                width="100%"
-                onClick={submitHandler}
-                isLoading={loading}
-            >
+            <Button colorScheme="blue" mt={4} width="100%" onClick={submitHandler} isLoading={loading}>
                 Login
             </Button>
 
-            <Button
-                variant="solid"
-                colorScheme="red"
-                mt={2}
-                width="100%"
-                onClick={setGuestCredentials}
-            >
-                Get Guest User Credentials
-            </Button>
+            <Text mt={3}>
+                <Link color="blue.500" onClick={onOpen}>
+                    Forgot Password?
+                </Link>
+            </Text>
+
+            {/* Forgot Password Modal */}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Forgot Password</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <FormControl isRequired>
+                            <FormLabel>Enter your email</FormLabel>
+                            <Input
+                                placeholder="Enter your email"
+                                value={forgotEmail}
+                                onChange={(e) => setForgotEmail(e.target.value)}
+                            />
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" onClick={handleForgotPassword} isLoading={loading}>
+                            Send Reset Link
+                        </Button>
+                        <Button ml={3} onClick={onClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </VStack>
     );
 };
