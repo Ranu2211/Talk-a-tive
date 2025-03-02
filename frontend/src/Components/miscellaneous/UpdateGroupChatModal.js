@@ -203,7 +203,8 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
               {selectedChat.users.map((u) => {
             return(
            <UserBadgeItem
-           key={user._id}
+           key={u._id}
+          //  key={user._id}
            user = {u}
            handleFunction={()=> handleRemove(u)}
       

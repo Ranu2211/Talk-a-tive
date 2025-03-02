@@ -66,7 +66,8 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
 };
 
 
-    const submitHandler = async () => {
+    const submitHandler = async (e) => {
+          e.preventDefault();
         setLoading(true);
         if (!email.trim() || !password.trim()) {
             toast({
@@ -118,6 +119,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
                 />
             </FormControl>
 
@@ -129,6 +131,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="new-password"
                     />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick}>

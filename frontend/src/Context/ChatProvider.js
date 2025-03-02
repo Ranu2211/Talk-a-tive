@@ -1,32 +1,59 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useHistory , useLocation} from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const ChatContext = createContext(null);
 
- const ChatProvider = ({children}) => {
-    const [user,setUser] = useState(null);
+const ChatProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
     const [selectedChat, setSelectedChat] = useState();
-    const [chats,setChats] = useState([]);
-    const [notification,setNotification] = useState([]);
+    const [chats, setChats] = useState([]);
+    const [notification, setNotification] = useState([]);
     const history = useHistory();
     const location = useLocation();
-    const publicRoutes = ['/', '/test', '/reset-password'];
+    const publicRoutes = ['/', '/reset-password'];
 
- useEffect (() =>{
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(userInfo);
-    const isPublicRoute = publicRoutes.some(route => 
+    const resetChatState = () => {
+        setSelectedChat(null);
+        setChats([]);
+        setNotification([]);
+    }
+    const setUserWithReset = (newUser) => {
+        if (!newUser || (user && newUser && user._id !== newUser._id)) {
+            resetChatState();
+        }
+        setUser(newUser);
+    }
+
+    useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        setUserWithReset(userInfo);
+        const isPublicRoute = publicRoutes.some(route =>
             location.pathname === route || location.pathname.startsWith(route + '/')
         );
 
-    if(!userInfo && !isPublicRoute){
+        if (!userInfo && !isPublicRoute) {
+            history.push("/");
+        }
+        // eslint-disable-next-line
+    }, [history, location]);
+
+    const logoutUser = () => {
+        resetChatState();
+        localStorage.removeItem("userInfo");
+        setUser(null);
         history.push("/");
     }
-    // eslint-disable-next-line
-  }, [history, location]);
 
-    return (<ChatContext.Provider value={{user, setUser,selectedChat, setSelectedChat,
-        chats,setChats,notification,setNotification}}>{children}</ChatContext.Provider>);
+    return (
+    <ChatContext.Provider 
+    value={{
+        user, setUser: setUserWithReset, selectedChat, setSelectedChat,
+        chats, setChats, notification, setNotification, resetChatState, logoutUser
+    }}
+    >
+        {children}
+        </ChatContext.Provider>
+        );
 };
 //export default ChatProvider;
 export const ChatState = () => {

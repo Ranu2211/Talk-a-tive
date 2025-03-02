@@ -50,6 +50,15 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     // eslint-disable-next-line
   }, [fetchAgain, user]);
 
+  const getGroupAvatar = (chat) => {
+  return(
+    <Avatar
+        size="sm"
+        name={chat.chatName} 
+        bg="teal.500" 
+      />
+  )
+  }
   return (
     <Box
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
@@ -70,6 +79,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
         w="100%"
         justifyContent="space-between"
         alignItems="center"
+        fontWeight="bold"
       >My Chats
         <GroupChatModal>
           <Button
@@ -105,14 +115,21 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
                 alignItems="center"
                 gap={3}
               >
-                {!chat.isGroupChat && user && (
+                {(!chat.isGroupChat && user  ) ? (
                   <Avatar
                     size="sm"
                     name={getSender(loggedUser, chat.users)}
-                    src={user.pic || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
+                    src={chat.users.find(u => u._id !== loggedUser?._id)?.pic 
+                      // || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+                      }
+                    // src={user.pic || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
                   />
-                )}
-                <Text>
+                ) : (
+                  getGroupAvatar(chat)
+                )
+                }
+                <Box flex="1">
+                <Text fontWeight="500">
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
@@ -126,6 +143,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
                   </Text>
                 )}
               </Box>
+               </Box>
             ))}
           </Stack>
         ) : (

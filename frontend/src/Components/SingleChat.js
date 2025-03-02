@@ -12,7 +12,8 @@ import {
   Image,
   InputRightElement,
   InputGroup,
-  Flex
+  Flex,
+  Avatar
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender, getSenderFull } from "../config/ChatLogics";
@@ -86,7 +87,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     if (!selectedChat) return;
     try {
       const config = {
-          headers: {
+        headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
@@ -229,6 +230,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Text
+            as="div"
             fontSize={{ base: "28px", md: "30px" }}
             pb={1}
             px={2}
@@ -247,13 +249,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <>
                 <Box display="flex" alignItems="center" gap={3}>
                   <ProfileModal user={getSenderFull(user, selectedChat.users)}>
-                    <Image
-                      borderRadius="full"
-                      boxSize="30px"
-                      src={getSenderFull(user, selectedChat.users).pic}
-                      alt={getSenderFull(user, selectedChat.users).name}
-                      cursor="pointer"
-                    />
+                    <Box display="flex" alignItems="center">
+                      <Avatar
+                        size="sm"
+                        borderRadius="full"
+                        fontWeight="bold" 
+                        name={getSenderFull(user, selectedChat.users)?.name || "User"}
+                        src={getSenderFull(user, selectedChat.users)?.pic}
+                        cursor="pointer"
+                      />
+                    </Box>
                   </ProfileModal>
                   <Text fontSize="lg" fontWeight="bold">
                     {getSender(user, selectedChat.users)}
@@ -368,7 +373,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     aria-label="Send Message"
                     onClick={sendMessage}
                     isDisabled={(!newMessage.trim() && !imagePreview) || sendingMessage}
-                   />
+                  />
                 </InputRightElement>
               </InputGroup>
             </FormControl>

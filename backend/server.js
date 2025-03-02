@@ -26,23 +26,24 @@ app.use(express.urlencoded({extended: false}));
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
+console.log("directory", path.join(__dirname, 'uploads'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.post('/send-mail',sendmail);
 
 //.....deployment
-// const  _dirname1 = path.resolve();
-// if(process.env.NODE_ENV === "production"){
-//    app.use(express.static(path.join(_dirname1, "/frontend/build")));
+ const  _dirname1 = path.resolve();
+ if(process.env.NODE_ENV === "production"){
+   app.use(express.static(path.join(_dirname1, "/frontend/build")));
 
-//    app.get('*',(req , res) => {
-//       res.sendFile(path.resolve(_dirname1, "frontend","build","index.html"));
-//    })
+  app.get('*',(req , res) => {
+      res.sendFile(path.resolve(_dirname1, "frontend","build","index.html"));
+  })
 
-// }else{
-//    app.get('/', (req,res) => {
-//       res.send("API is running successfully");
-//    });
-// }
+ }else{
+   app.get('/', (req,res) => {
+     res.send("API is running successfully");
+   });
+}
 //...deployment
 
 app.use(notFound)

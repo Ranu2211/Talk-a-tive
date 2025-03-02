@@ -162,8 +162,9 @@ const GroupChatModal = ({ children }) => {
                 );
               })}
             </Box>
-            {loading ? <div>loading</div> : (
-              searchResult?.slice(0, 4).map(user => (
+            {loading ? <div>loading</div> :
+             (
+              searchResult?.slice(0, 4).map(Searchuser => (
                 <UserListItem key={user._id} user={user}
                   handleFunction={() => handleGroup(user)}
                 />

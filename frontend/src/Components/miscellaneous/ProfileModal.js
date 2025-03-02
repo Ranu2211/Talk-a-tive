@@ -8,8 +8,9 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Image,
-  Text
+  //Image,
+  Text,
+  Avatar
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 
@@ -42,11 +43,16 @@ const ProfileModal = ({ user, children }) => {
             alignItems="center"
             flexDir="column"
           >
-            <Image
-              borderRadius="full"
+            <Avatar
+            borderRadius="full"
               boxSize="150px"
               src={user?.pic}
-              alt={user?.name}
+              name={user?.name}
+              fontSize="50px"  
+              fontWeight="bold" 
+              
+             // bg="blue.500"    
+              color="white"
             />
             <Text fontSize={{ base: "25px", md: "25px" }} fontFamily="Work sans">
               Email: {user?.email}
