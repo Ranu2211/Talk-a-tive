@@ -99,9 +99,9 @@ const baseURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {chats && Array.isArray(chats)? (
           <Stack overflowY='scroll'>
-            {chats.map((chat) => (
+           {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
